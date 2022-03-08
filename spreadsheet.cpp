@@ -34,12 +34,20 @@ int main() {
             }
             int num = stoi(b);
             string answer = "";
-            answer += abc[num%26];
-            while (1){
-                if(num<27)break;
-            num = num/26;
-            answer += abc[num%26];
+            if(num % 26 ==0){
+                answer += 'Z'; num--;
             }
+            else {answer += abc[num%26];}
+            
+            while (num>26){
+                num = num/26;
+                if(num % 26 ==0){
+                    answer += 'Z'; num--;
+                }
+                else {answer += abc[num%26];}
+                
+            }
+            
             string aa="";
             for(int i=answer.length()-1;i>=0;i--){
                 aa+=answer[i];
