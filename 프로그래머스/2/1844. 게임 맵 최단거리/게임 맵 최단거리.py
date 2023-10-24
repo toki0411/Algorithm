@@ -11,7 +11,7 @@ def bfs(x,y,n,m, maps):
             if 0 <= nx < n and 0 <= ny < m and maps[nx][ny] == 1:
                 q.append((nx, ny))
                 maps[nx][ny] = maps[x][y] + 1
-    return maps[n-1][m-1]
+    return maps[n-1][n-1]
 def solution(maps):
     n = len(maps)
     m=len(maps[0])
