@@ -1,12 +1,12 @@
-
+# import sys
+# sys.setrecursionlimit(10**6)
 t = int(input())
 dx = [-1,1,0,0]
 dy = [0,0,1,-1]
 def dfs(x, y, num):
-    if len(num) > 7:
-        return
-    if len(num) == 7 and ''.join(num) not in ans:
-        ans.add(''.join(num))
+    if (len(num)) == 7:
+        if ''.join(num) not in ans:
+            ans.add(''.join(num))
         return
     for i in range(4):
         nx = x + dx[i]
