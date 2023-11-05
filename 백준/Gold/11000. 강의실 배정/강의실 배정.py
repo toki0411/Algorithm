@@ -1,24 +1,12 @@
 import heapq
-pq = []
-q = []
 n = int(input())
+room = [list(map(int,input().split())) for _ in range(n)]
+ans = 0; pq =[]
+room.sort()
+heapq.heappush(pq, room[0][1])
 
-for _ in range(n):
-    s, t = map(int, input().split())
-    q.append([s,t])
-q.sort()
-
-heapq.heappush(pq, q[0][1])
-for i in range(1, n):
-    if q[i][0] < pq[0]:
-        heapq.heappush(pq, q[i][1])
-    else:
+for i in range(1, len(room)):
+    if pq[0] <= room[i][0]:
         heapq.heappop(pq)
-        heapq.heappush(pq, q[i][1])
+    heapq.heappush(pq, room[i][1])
 print(len(pq))
-
-
-
-
-
-
