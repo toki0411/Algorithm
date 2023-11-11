@@ -1,22 +1,32 @@
-n = int(input())
-num = list(map(int, input().split()))
-operator = list(map(int, input().split()))
-def dfs(depth, plus, minus, multiply, divide, val):
-    global max_val, min_val
-    if depth == n:
-        max_val = max(max_val, val)
-        min_val = min(min_val, val)
-        return
-    if plus:
-        dfs(depth + 1, plus - 1, minus, multiply, divide, val + num[depth])
-    if minus:
-        dfs(depth + 1, plus, minus - 1, multiply, divide, val - num[depth])
-    if multiply:
-        dfs(depth + 1, plus, minus, multiply - 1, divide, val * num[depth])
-    if divide:
-        dfs(depth + 1, plus, minus, multiply, divide - 1, int(val / num[depth]))
+# 백트래킹 (Python3 통과, PyPy3도 통과)
+import sys
 
-max_val = -1e9; min_val = 1e9
-dfs(1, operator[0], operator[1], operator[2], operator[3], num[0])
-print(int(max_val))
-print(int(min_val))
+input = sys.stdin.readline
+N = int(input())
+num = list(map(int, input().split()))
+op = list(map(int, input().split()))  # +, -, *, //
+
+maximum = -1e9
+minimum = 1e9
+
+
+def dfs(depth, total, plus, minus, multiply, divide):
+    global maximum, minimum
+    if depth == N:
+        maximum = max(total, maximum)
+        minimum = min(total, minimum)
+        return
+
+    if plus:
+        dfs(depth + 1, total + num[depth], plus - 1, minus, multiply, divide)
+    if minus:
+        dfs(depth + 1, total - num[depth], plus, minus - 1, multiply, divide)
+    if multiply:
+        dfs(depth + 1, total * num[depth], plus, minus, multiply - 1, divide)
+    if divide:
+        dfs(depth + 1, int(total / num[depth]), plus, minus, multiply, divide - 1)
+
+
+dfs(1, num[0], op[0], op[1], op[2], op[3])
+print(maximum)
+print(minimum)
