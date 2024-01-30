@@ -1,32 +1,59 @@
-from collections import deque
 
-dx = [0, 0, -1]
-dy = [1, -1, 0]
-for tc in range(1,11):
-    t = int(input());    n = 100
-    ans = target_x = target_y = 0
-    q=deque()
-    graph = [list(map(int, input().split())) for _ in range(n)]
-    visited = [[0] * 100 for _ in range(100)]
-    # 2 찾기
-    for i in range(100):
-        if graph[n-1][i] == 2:
-            target_x = n-1
-            target_y = i
-            visited[target_x][target_y]=1
-            q.append([target_x, target_y])
-            break
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
-    while q:
-        x, y = q.popleft()
-        if x == 0:
-            ans = y
-            break
-        for i in range(3):
-            nx = x + dx[i]
-            ny = y + dy[i]
-            if 0 <= nx < n and 0 <= ny < n and not visited[nx][ny] and graph[nx][ny] == 1:
-                visited[nx][ny] = 1
-                q.append([nx, ny])
-                break
-    print('#{} {}'.format(t, ans))
+public class Solution {
+	
+
+	public static void main(String[] args) throws IOException {
+		BufferedReader br= new BufferedReader(new InputStreamReader(System.in));
+		for (int tc = 1; tc <= 10; tc ++) {
+			int graph[][] = new int[100][100];
+			br.readLine();
+			
+			boolean visited[][] = new boolean[100][100];
+			int x = 0;
+			int y = 0;
+			
+			for (int i=0; i< 100; i++) {
+				StringTokenizer st = new StringTokenizer(br.readLine());
+				for (int j = 0; j<100; j++) {
+					int k = Integer.parseInt(st.nextToken());
+					graph[i][j] = k;
+					if (k == 2) {
+						x = i;
+						y = j;
+					}
+				}
+			}
+			int dx[] = {0,0,-1};
+			int dy[] = {-1,1,0};
+			int ans = 0;
+			
+			while (true) {
+				
+				if (x == 0 && graph[x][y] == 1) {
+					ans = y;
+					break;
+				}
+				for (int i=0; i<3; i++) {
+					int nx = x + dx[i];
+					int ny = y + dy[i];
+					if (0<=nx && 0<=ny && nx < 100 && ny < 100 && graph[nx][ny] == 1 && !visited[nx][ny]) {
+						x = nx;
+						y = ny;
+						visited[nx][ny] = true;
+						break;
+					}
+					
+				}
+			}
+
+			System.out.println("#"+tc+" " + ans);
+		}
+
+	}
+
+}
