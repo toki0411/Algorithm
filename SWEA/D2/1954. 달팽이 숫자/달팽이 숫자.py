@@ -1,25 +1,48 @@
-t = int(input())
-for tc in range(1, t + 1):
-    n = int(input())
-    s = 0
-    k = 1
-    arr = [[0] * n for _ in range(n)]
-    while n > 0:
-        last = s + n -1
-        for i in range(s, last+1):
-            arr[s][i] = k
-            k += 1
-        for i in range(s + 1, last+1):
-            arr[i][last] = k
-            k += 1
-        for i in range(last-1, s-1, -1):
-            arr[last][i] = k
-            k += 1
-        for i in range(last-1, s, -1):
-            arr[i][s] = k
-            k += 1
-        n -= 2
-        s += 1
-    print('#{} '.format(tc))
-    for p in arr:
-        print(*p)
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class Solution {
+
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int dx[] = {0,1,0,-1};
+		int dy[] = {1,0,-1,0};
+		int t = Integer.parseInt(br.readLine());
+		for (int tc = 1; tc <= t; tc++) {
+			int n = Integer.parseInt(br.readLine());
+			System.out.println("#" + tc);
+			int arr[][] = new int[n][n];
+			int x = 0; int y = 0;
+			int idx = 0;
+			arr[0][0] = 1;
+			
+			for (int i=2; i<= n*n; i++) {
+				int nx = x + dx[idx];
+				int ny = y + dy[idx];
+				if (nx < n && ny < n && nx >=0 && ny >=0 && arr[nx][ny]==0) {
+				}
+				else {
+					idx += 1;
+					if (idx == 4)idx = 0;
+					nx = x + dx[idx];
+					ny = y + dy[idx];
+				}
+				
+				x = nx;
+				y = ny;
+				arr[x][y] = i;
+		
+			}
+			
+			for (int i = 0; i< n; i++) {
+				for (int j =0; j<n; j++) {
+					System.out.print(arr[i][j] + " ");
+				}
+				System.out.println();
+			}
+		}
+	}
+
+}
