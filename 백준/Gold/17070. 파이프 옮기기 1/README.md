@@ -4,7 +4,7 @@
 
 ### 성능 요약
 
-메모리: 120788 KB, 시간: 880 ms
+메모리: 17452 KB, 시간: 224 ms
 
 ### 분류
 
@@ -12,7 +12,7 @@
 
 ### 제출 일자
 
-2023년 9월 5일 17:30:07
+2024년 2월 28일 14:54:27
 
 ### 문제 설명
 
@@ -34,7 +34,7 @@
 
 <p>아래 그림은 파이프가 놓여진 방향에 따라서 이동할 수 있는 방법을 모두 나타낸 것이고, 꼭 빈 칸이어야 하는 곳은 색으로 표시되어져 있다.</p>
 
-<p style="text-align: center;"><img alt="" src="" style="width: 578px; height: 203px;"></p>
+<p style="text-align: center;"><img alt="" src="https://upload.acmicpc.net/0f445b26-4e5b-4169-8a1a-89c9e115907e/-/preview/" style="width: 578px; height: 203px;"></p>
 
 <p style="text-align: center;">가로</p>
 
