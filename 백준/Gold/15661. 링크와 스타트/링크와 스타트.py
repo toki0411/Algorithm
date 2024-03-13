@@ -20,7 +20,7 @@ n = int(input())
 graph = [list(map(int, input().split())) for _ in range(n)]
 num = [i for i in range(n)]
 ans = 1e9
-for i in range(n):
+for i in range(n//2+1):
     visited = [0] * n
     dfs(0,i,0)
 
