@@ -1,20 +1,19 @@
-t = int(input())
-def dfs(total, target, start):
+def dfs(h, cnt): #부분집합을 이용한다.
     global ans
-    if total >= target:
-        ans = min(total, ans)
+    if cnt == N:
+        if h >= B:
+            ans = min(ans, h)
         return
-    for i in range(start, n):
-        if not visited[i]:
-            visited[i] = 1
-            dfs(total + height[i], target, i+1)
-            visited[i] = 0
 
+    dfs(h + height[cnt], cnt + 1)
+    dfs(h , cnt + 1)
 
-for tc in range(1, t+1):
-    n,m = map(int,input().split())
+T = int(input())
+
+for tc in range(1, T+1):
+    N, B = map(int, input().split())
+
     height = list(map(int, input().split()))
-    visited = [0] * n
-    ans = 1e9
-    dfs(0,m, 0)
-    print('#{} {}'.format(tc, ans-m))
+    ans = 1e8
+    dfs(0,0)
+    print("#{} {}".format(tc, ans-B))
