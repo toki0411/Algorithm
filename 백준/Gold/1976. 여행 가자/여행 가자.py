@@ -1,40 +1,35 @@
 import sys
 input = sys.stdin.readline
 sys.setrecursionlimit(10**6)
-
-n = int(input())
-m = int(input())
-parent = [i for i in range(n+1)]
-
-def findParent(cur):
-    if parent[cur] == cur:
-        return cur
-    elif parent[cur] != cur:
-        parent[cur] = findParent(parent[cur])
-        return parent[cur]
-def union(x, y):
-    x = findParent(x)
-    y = findParent(y)
-    if x < y:
-        parent[y] = x
+def findParents(x):
+    if x == parents[x]:
+        return x
+    parents[x] = findParents(parents[x])
+    return parents[x]
+def union(aa, bb):
+    aRoot = findParents(aa)
+    bRoot = findParents(bb)
+    if aRoot < bRoot:
+        parents[bRoot] = aRoot
     else:
-        parent[x] = y
+        parents[aRoot] = bRoot
 
-for i in range(n):
+N = int(input())
+M = int(input())
+parents = [0] * (N+1)
+for i in range(1, N+1):
+    parents[i] = i
+for i in range(N):
     arr = list(map(int, input().split()))
-    for j in range(i+1, n):
+    for j in range(i+1, N):
         if arr[j] == 1:
             union(i+1, j+1)
 
 travel = list(map(int, input().split()))
-prev = -1
-key = True
-for i in range(len(travel)):
-    p = findParent(travel[i])
-    if prev == -1:
-        prev = p
-    else:
-        if prev != p:
-            key = False
-            break;
-print("YES" if key else "NO")
+for i in range(len(travel)-1):
+    now = travel[i]
+    next = travel[i+1]
+    if findParents(now) != findParents(next):
+        print("NO")
+        exit()
+print("YES")
