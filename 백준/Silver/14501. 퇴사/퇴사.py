@@ -1,23 +1,15 @@
-def dfs(start, price):
-
-    global ans
-    if start > N:
-        return
-    if start <= N:
-        ans = max(price, ans)
-
-    for i in range(start, N):
-        if schedule[i][0] + start <= N:
-            dfs(schedule[i][0] + i , price + schedule[i][1])
-
-
+import sys
+sys.stdin.readline
 N = int(input())
-schedule = []
-isSelected = [0] * N
-ans = 0
-for _ in range(N):
-    a, b = map(int, input().split())
-    schedule.append([a,b])
+job = [ list(map(int,input().split())) for _ in range(N)]
+dp = [0] * (N+1)
 
-dfs(0, 0)
-print(ans)
+# 초기화
+for i in range(N-1, -1, -1):
+    day, price = job[i][0], job[i][1]
+    if i + day > N:
+        dp[i] = dp[i+1]
+    else:
+        dp[i] = max(dp[i+1], dp[i + job[i][0]] + job[i][1])
+
+print(dp[0])
