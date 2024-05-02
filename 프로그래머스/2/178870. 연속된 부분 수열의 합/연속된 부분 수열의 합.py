@@ -1,24 +1,20 @@
 def solution(sequence, k):
-    start = end = 0; ans = []
-    prev_start =0; prev_end = len(sequence)
+    answer = [0, len(sequence) - 1]
+    start = 0
+    end = 0
     val = sequence[0]
     while end < len(sequence):
         if val == k:
-            if abs(start - end) < abs(prev_start - prev_end):
-                prev_start = start; prev_end = end
+            if end - start < answer[1] - answer[0]:
+                answer = [start, end]
+            val -= sequence[start]
+            start +=1
+        elif val < k:
             end += 1
             if end >= len(sequence):
                 break
-            else:
-                val += sequence[end]
+            val += sequence[end]
         else:
-            if val < k:
-                end += 1
-                if end >= len(sequence):
-                    break
-                else:
-                    val += sequence[end]
-            else:
-                val -= sequence[start]
-                start += 1
-    return [prev_start, prev_end]
+            val -= sequence[start]
+            start += 1  
+    return answer
