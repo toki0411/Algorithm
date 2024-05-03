@@ -1,35 +1,40 @@
-from collections import deque
+def findParents(x):
+    global parents
+    if x == parents[x]:
+        return x
+    parents[x] = findParents(parents[x])
+    return parents[x]
+
+def union(a, b):
+    global parents
+    aRoot = findParents(a)
+    bRoot = findParents(b)
+    if aRoot < bRoot:
+        parents[bRoot] = aRoot
+    else:
+        parents[aRoot] = bRoot
+        
 def solution(n, wires):
-    graph = [[] for _ in range(n+1)]
-    for i in range(len(wires)):
-        a, b = wires[i]
-        graph[a].append(b)
-        graph[b].append(a)
+    wires.sort()
+    global parents
+    answer = 1e9
+    for i in range(n-1):
+        parents = [i for i in range(n+1)]
+        for j in range(n-1):
+            if i != j:
+                a, b = wires[j][0], wires[j][1]
+                union(a,b)
+  
+        
+        diff = {}
+        for i in range(1, n+1):
+            p = findParents(parents[i])
+            if p in diff:
+                diff[p] += 1
+            else:
+                diff[p] = 1
+        diff = list(diff.values())
     
-    def bfs(v):
-        visited =[0] * (n+1)
-        visited[v] = True
-        q = deque([v])
-        cnt = 1
-        while q:
-            x = q.popleft()
-            for i in range(1, n+1):
-                if not visited[i] and i in graph[x]:
-                    visited[i] = True
-                    cnt += 1
-                    q.append(i)
-        return cnt
-    val = 10000000
-    for i in range(len(wires)):
-        a, b = wires[i]
-        graph[a].remove(b)
-        graph[b].remove(a)
-        
-        val = min(abs(bfs(a) - bfs(b)), val)
-        
-        graph[a].append(b)
-        graph[b].append(a)
-        
-    return val
-        
-    
+        if len(diff) == 2:
+            answer = min(abs(diff[0]-diff[1]), answer)
+    return answer
