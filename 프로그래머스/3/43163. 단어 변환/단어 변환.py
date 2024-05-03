@@ -1,23 +1,33 @@
-def check(word, begin):
-    cnt = 0
+def dfs(word, target, cnt, words):
+    global answer, visited
+    if word == target:
+        answer = min(answer, cnt)
+        return 
+    if cnt > answer:
+        return 
+    for i in range(len(words)):
+        if changeable(word, words[i]) and not visited[i]:
+            visited[i] = 1
+            dfs(words[i], target, cnt + 1, words)
+            visited[i] = 0
+
+            
+def changeable(word, target):
+    diff = 0
     for i in range(len(word)):
-        if word[i] != begin[i]:
-            cnt += 1
-    if cnt == 1: return True
-    else: return False
+        if word[i] != target[i]:
+            diff += 1
+    if diff == 1:
+        return True
+    else:
+        return False
+        
 def solution(begin, target, words):
-    visited = [0] * len(words)
+    global answer, visited
+    answer = 1e9
     if target not in words:
         return 0
-
-    def dfs(begin, ans, min_val):
-        if begin == target:
-            min_val = min(len(ans), min_val)
-            return min_val
-        for idx, word in enumerate(words):
-            if not visited[idx] and check(word, begin):
-                visited[idx] = 1
-                min_val = dfs(word, ans + [word], min_val)
-                visited[idx] = 0
-        return min_val
-    return dfs(begin, [], len(words))
+    visited = [0] * len(words)
+    dfs(begin, target, 0, words)
+    
+    return answer
