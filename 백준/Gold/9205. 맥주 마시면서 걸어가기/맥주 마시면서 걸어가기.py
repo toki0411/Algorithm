@@ -1,27 +1,33 @@
 from collections import deque
-t = int(input())
-def dfs(x, y):
-    if abs(x-target_x) + abs(y - target_y) <= (20 * 50):
-        visited[-1] = 1
-        return
-    for i in range(n):
-        if visited[i]:
-            continue
-        nx, ny = store[i]
-        distance = abs(x-nx) + abs(y-ny)
-        if distance <= (20*50):
-            visited[i] = 1
-            dfs(nx,ny)
-for tc in range(t):
-    n = int(input()) #편의점 개수
-    house_x, house_y = map(int,input().split())
-    store = [list(map(int, input().split())) for _ in range(n)]
-    target_x, target_y = map(int, input().split())
-    visited = [0] * (n+1) # 집, 편의점, 축제장소
-    # visited[0] = 1 # 집은 idx 0이고 방문처리한다.
-    dfs(house_x, house_y)
-    if not visited[-1]:
-        print("sad")
-    else:
-        print("happy")
 
+T = int(input())
+
+while T:
+    n = int(input())
+    hx, hy = map(int, input().split())
+    q = deque()
+    q.append([hx, hy])
+    pList = []
+    for i in range(n):
+        px, py = map(int, input().split())
+        pList.append([px, py])
+    fx, fy = map(int, input().split())
+
+    visited = [0] * n
+    flag = False
+
+    while q:
+        x, y = q.popleft()
+        if abs(x - fx) + abs(y - fy) <= 1000:
+            flag = True
+            break
+        for i in range(n):
+            px, py = pList[i][0], pList[i][1]
+            if visited[i] == 0 and abs(x - px) + abs(y - py) <= 1000:
+                q.append([px, py])
+                visited[i] = 1
+    if flag:
+        print("happy")
+    else:
+        print("sad")
+    T-=1
