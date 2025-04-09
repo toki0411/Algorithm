@@ -1,42 +1,43 @@
-from itertools import combinations 
 import sys
-n, k = map(int, input().split())
+
+N,K = map(int,sys.stdin.readline().split())
+set_word = []
+for i in range(N):
+    word_input = sys.stdin.readline().rstrip()
+    set_word.append(set(list(word_input)))
+
+learn = [0]*26
+for c in ('a', 'c', 'i', 'n', 't'):
+    learn[ord(c) - ord('a')] = 1
+
 answer = 0
-# a,n,t,i,c는 반드시 가르쳐야 함
 
-first_word = {'a','n','t','i','c'}
+def dfs(idx, cnt):
+    global answer
+    if cnt == K - 5:
+        readcnt = 0
+        for word in set_word:
+            flag = True
+            for w in word:
+                if learn[ord(w) - ord('a')] == 0:
+                    flag = False
+                    break;
+            if flag:
+                readcnt += 1
+        answer = max(answer, readcnt)
+        return
+    
+    for i in range(idx, 26):
+        if not learn[i]:
+            learn[i] = 1
+            dfs(i+1, cnt + 1)
+            learn[i] = 0
+            
 
-remain_alphabet = set(chr(i) for i in range(97, 123)) - first_word
-data = [sys.stdin.readline().rstrip()[4:-4] for _ in range(n)]
-
-def countReadableWords(data, learned):
-   cnt = 0
-   for word in data:
-      canRead = 1
-      for w in word:
-          # 안배웠으니까 못읽는다.
-         if learned[ord(w)] == 0:
-            canRead = 0
-            break
-      if canRead == 1:
-         cnt += 1
-   return cnt
-
-if k >= 5:
-   learned = [0] * 123
-   for x in first_word:
-      learned[ord(x)] = 1
-
-   # 남은 알파벳 중에서 k-5개를 선택해본다.
-   for teach in list(combinations(remain_alphabet, k-5)):
-      for t in teach:
-         learned[ord(t)] = 1
-      cnt = countReadableWords(data, learned)
-
-      if cnt > answer:
-         answer = cnt
-      for t in teach:
-         learned[ord(t)] = 0
-   print(answer)
+if K<5:
+    print(0)
+elif K==26:
+    print(N)
 else:
-   print(0)
+    dfs(0,0)
+    print(answer)
