@@ -1,29 +1,44 @@
+answer = 1e9
+def dfs(dia, iron, stone, stemina, idx, minerals):
+    global answer
+    if idx == len(minerals) or (dia == 0 and iron == 0 and stone == 0):
+        answer = min(stemina, answer)
+        return 
+    newIdx = idx + 5
+    if newIdx > len(minerals):
+        newIdx = len(minerals)
+        
+    if dia > 0:
+        newStemina = calStemina(idx, newIdx, "dia", minerals)
+        dfs(dia - 1, iron, stone, stemina + newStemina, newIdx, minerals)
+    if iron > 0:
+        newStemina = calStemina(idx, newIdx, "iron", minerals)
+        dfs(dia, iron - 1, stone, stemina + newStemina, newIdx, minerals)
+    if stone > 0:
+        newStemina = calStemina(idx, newIdx, "stone", minerals)
+        dfs(dia, iron, stone - 1, stemina + newStemina, newIdx, minerals)
+                                
+def calStemina(start, end, tool, minerals):
+    stemina = 0;
+    if tool == "dia":
+        for i in range(start, end):
+            stemina += 1
+    elif tool == "iron":
+         for i in range(start, end):
+            if minerals[i] == "diamond":
+                stemina += 5
+            else:
+                stemina += 1
+    else:
+        for i in range(start, end):
+            if minerals[i] == "diamond":
+                stemina += 25
+            elif minerals[i] == "iron":
+                stemina += 5
+            else:
+                stemina += 1       
+    return stemina
+                                
 def solution(picks, minerals):
-    ans = []
-    tired = [[1, 1, 1],
-             [5, 1, 1],
-             [25, 5, 1]]
-    tools = {"diamond" : 1, "iron": 2, "stone": 3}
-    def dfs(minerals, picks, tired_rate):
-        # 종료 조건
-        if sum(picks) == 0 or minerals == []:
-            ans.append(tired_rate)
-            return
-        m = minerals[:5]
-        # tool 을 picks에서 감소
-        for t in range(3):
-            if picks[t] > 0:
-                picks[t] -= 1
-                tired_rate_val = tired_rate_calculate(t, m)
-                dfs(minerals[5:], picks, tired_rate + tired_rate_val)
-                picks[t] += 1
-
-    def tired_rate_calculate(t, minerals):
-        tired_rate = 0
-        for m in minerals:
-            tired_rate += tired[t][tools[m]-1]
-
-        return tired_rate
-    dfs(minerals, picks, 0)
-    ans.sort()
-    return ans[0]
+    dfs(picks[0], picks[1], picks[2], 0, 0, minerals)
+    return answer
