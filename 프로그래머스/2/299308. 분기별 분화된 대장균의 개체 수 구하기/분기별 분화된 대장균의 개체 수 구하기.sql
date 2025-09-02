@@ -9,6 +9,5 @@ from ecoli_data
 )
 select A.QUARTER, count(*) as ECOLI_COUNT
 FROM A
-GROUP BY QUARTER;
-
-    
+GROUP BY QUARTER
+ORDER BY QUARTER;
