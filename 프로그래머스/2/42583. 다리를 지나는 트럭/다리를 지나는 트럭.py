@@ -1,19 +1,22 @@
 from collections import deque
 def solution(bridge_length, weight, truck_weights):
-    time = 0
-    now = 0
-    current_weight = 0
     q = deque()
+    time = 0  #현재 시간
+    idx = 0   #현재 트럭 인덱스 
+    now = 0   #현재 다리에 올라간 무게 
     while True:
-        if now >= len(truck_weights) and len(q) == 0 :
+        #종료조건 
+        if len(q) == 0 and idx >= len(truck_weights) :
             break
-        time += 1
-        if len(q) > 0 and q[0][1] == time:
-            v = q.popleft()
-            current_weight -= v[0]
-        if now < len(truck_weights):
-            if current_weight + truck_weights[now] <=weight:  # 추가
-                q.append((truck_weights[now], time + bridge_length))
-                current_weight += truck_weights[now]
-                now += 1
+        time +=1 
+        #내릴 수 있으면 내리기 
+        if len(q) > 0 and time == q[0][1]:
+            now -= q[0][0]
+            q.popleft()
+        #트럭이 다리에 올라갈 수 있으면 추가 
+        if idx < len(truck_weights):
+            if now + truck_weights[idx] <= weight:
+                now += truck_weights[idx]
+                q.append([truck_weights[idx], time + bridge_length])
+                idx += 1
     return time
