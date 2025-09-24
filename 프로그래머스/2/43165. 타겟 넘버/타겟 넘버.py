@@ -1,17 +1,21 @@
-def dfs(numbers, target, depth, val):
-    global cnt
-    if depth == len(numbers):
-        if val == target:
-            cnt +=1
-            return 
+def dfs(cnt, target, limit, cmd, numbers):
+    global answer
+    if cnt == limit : 
+        if cal(cmd, numbers) == target:
+            answer += 1
+        return 
+    dfs(cnt + 1, target, limit, cmd + ['+'], numbers)
+    dfs(cnt + 1, target, limit, cmd + ['-'], numbers)
+def cal(cmd, numbers) :
+    val = 0
+    for i in range(len(cmd)):
+        if cmd[i] == '+':
+            val += numbers[i] 
         else:
-            return
-    
-    dfs(numbers, target, depth + 1, val + numbers[depth])
-    dfs(numbers, target, depth + 1, val - numbers[depth])
-
+            val -= numbers[i]     
+    return val
 def solution(numbers, target):
-    global cnt
-    cnt = 0
-    dfs(numbers, target, 0, 0)
-    return cnt
+    global answer
+    answer = 0
+    dfs(0, target, len(numbers) , [], numbers)
+    return answer
