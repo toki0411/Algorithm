@@ -3,7 +3,7 @@ def solution(str):
     for s in str:
         if s == '(':
             stack.append('(')
-        elif s != '(' and len(stack) != 0:
+        elif s == ')' and len(stack) != 0:
             stack.pop()
         else:
             return False
